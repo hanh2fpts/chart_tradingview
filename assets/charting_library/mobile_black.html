@@ -16,10 +16,10 @@
             if (symbol)
                 symbolCode = symbol;
 
-            if (locale)
-                localeCode = locale.toLowerCase();
-            if (clientId)
-                clientIdValue = clientId;
+            // if (locale)
+            //     localeCode = locale.toLowerCase();
+            // if (clientId)
+            //     clientIdValue = clientId;
 
             initOnReady();
         }
@@ -30,6 +30,8 @@
 					results = regex.exec(location.search);
 				return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
 			}
+
+            var urlChart3r = "_blank.html";
 
 			var widget;
         	var symbolCode = 'AAA';

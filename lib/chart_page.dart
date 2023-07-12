@@ -22,7 +22,7 @@ class _ChartPageState extends State<ChartPage> {
         body: Center(
           child: InAppWebView(
             initialUrlRequest: URLRequest(
-                url: Uri.parse("http://localhost:8888/assets/charting_library/mobile_black.html")),
+                url: Uri.parse("http://localhost:8080/assets/charting_library1/chart_white.html")),
             androidOnPermissionRequest: (controller, origin, resources) async {
               return PermissionRequestResponse(
                   resources: resources, action: PermissionRequestResponseAction.GRANT);

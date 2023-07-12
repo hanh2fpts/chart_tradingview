@@ -6,7 +6,7 @@ import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
 import 'chart_page.dart';
 
-final InAppLocalhostServer localhostServer = InAppLocalhostServer(port: 8888);
+final InAppLocalhostServer localhostServer = InAppLocalhostServer(port: 8080);
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   localhostServer.start();
@@ -38,6 +38,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
         useMaterial3: true,
@@ -57,9 +58,6 @@ class MyHomePage extends StatelessWidget {
           backgroundColor: Theme.of(context).colorScheme.inversePrimary,
           title: const Text('Chart TradingView'),
         ),
-        body: Text(
-          'sdcsdc',
-          style: TextStyle(color: Colors.amber),
-        ));
+        body: const ChartPage());
   }
 }
