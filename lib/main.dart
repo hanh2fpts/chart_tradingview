@@ -57,8 +57,9 @@ class MyHomePage extends StatelessWidget {
           backgroundColor: Theme.of(context).colorScheme.inversePrimary,
           title: const Text('Chart TradingView'),
         ),
-        body: const ChartPage());
+        body: Text(
+          'sdcsdc',
+          style: TextStyle(color: Colors.amber),
+        ));
   }
 }
-
-//test
