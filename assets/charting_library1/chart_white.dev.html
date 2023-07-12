@@ -1,0 +1,142 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Chart (white)</title>
+
+    <!-- Fix for iOS Safari zooming bug -->
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+
+    <script type="text/javascript" src="charting_library/charting_library.min.js"></script>
+    <script type="text/javascript" src="datafeeds/udf/dist/polyfills.js"></script>
+    <script type="text/javascript" src="datafeeds/udf/dist/bundle.js"></script>
+
+    <script type="text/javascript">
+
+        function getParameterByName(name) {
+            name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+            var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+                results = regex.exec(location.search);
+            return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+        }
+
+        var urlChart3r = "_blank.html";
+
+        var widget;
+        var symbolCode = ' ';
+        var localeCode = "en"; // en/vi
+        var initCompleted = false;
+        var clientIdValue = ' ';
+        var chartHub = "https://chart.fpts.com.vn/chart3r/TAChartHub";
+        var chartApi = "https://chart.fpts.com.vn/chart3api";
+        var charts_storage_api = "https://chart.fpts.com.vn/chart3api";
+        var datafeed;
+
+        function createHubForChart(url, dataFeedName, iframeName) {
+            var iframe = document.createElement("iframe");
+            iframe.name = iframeName;
+            iframe.style.display = "none";
+            iframe.src = url + "?datafeed=" + dataFeedName;
+            document.body.append(iframe);
+        }
+
+        function setSymbolCode(symbol) {
+            symbolCode = symbol;
+            //if (initCompleted)
+            //    widget.chart().setSymbol(symbolCode);
+            //else
+            //    initOnReady();
+
+            initOnReady();
+        };
+
+        function setLocale(locale) {
+            localeCode = locale;
+
+            initOnReady();
+        }
+
+        function setEnvironment(symbol, locale, clientId) {
+            if (symbol)
+                symbolCode = symbol;
+
+            if (locale)
+                localeCode = locale.toLowerCase();
+            if (clientId)
+                clientIdValue = clientId;
+
+            initOnReady();
+        }
+
+        function initOnReady() {
+            datafeed = new Datafeeds.UDFCompatibleDatafeed(chartApi, 10000);
+            widget = window.tvWidget = new TradingView.widget({
+                fullscreen: true,
+                symbol: symbolCode,
+                interval: 'D',
+                container_id: "tv_chart_container",
+                //	BEWARE: no trailing slash is expected in feed URL
+                datafeed: datafeed,
+                library_path: "charting_library/",
+                locale: localeCode,
+                timezone: "exchange",
+                autosize: true,
+                time_frames: [
+                    { text: "5y", resolution: "M", description: "5 Years", title: "5yr" },
+                    { text: "2y", resolution: "M", description: "2 Years", title: "2yr" },
+                    { text: "1y", resolution: "W", description: "1 Years", title: "1yr" },
+                    { text: "6m", resolution: "D", description: "6 Month", title: "6m" },
+                    { text: "3m", resolution: "D", description: "3 Month", title: "3m" },
+                    { text: "1m", resolution: "D", description: "1 Month", title: "1m" },
+                    { text: "7d", resolution: "H", description: "7 Days", title: "7d" },
+                    { text: "1d", resolution: "H", description: "1 Days", title: "1d" }
+                ],
+                enabled_features: ["header_widget", "dont_show_boolean_study_arguments", "header_saveload", "logo_without_link", "adaptive_logo",
+                    "left_toolbar",
+                    "hide_left_toolbar_by_default",
+                    "study_buttons_in_legend",
+                    "format_button_in_legend",
+                    "edit_buttons_in_legend",
+                    "show_hide_button_in_legend",
+                    "delete_button_in_legend"],
+                disabled_features: [
+                    "use_localstorage_for_settings", "left_toolbar",
+                    "header_compare",
+                    "header_screenshot",
+                    "context_menus",
+                    "legend_context_menu",
+                    "pane_context_menu",
+                    "scales_context_menu",
+                    "show_chart_property_page", "symbol_info",
+                    "display_market_status", "go_to_date", "main_series_scale_menu", "timezone_menu",
+                    "compare_symbol",
+                    "datasource_copypaste"
+                ],
+                charts_storage_url: charts_storage_api,
+                charts_storage_api_version: "1.1",
+                client_id: clientIdValue,
+                load_last_chart: false,
+                preset: "mobile"
+            });
+
+            widget.onChartReady(function () {
+                datafeed.onReady(function () {
+                    var dataFeedName = "datafeed";
+                    var subscribers = datafeed._dataPulseProvider._subscribers;
+                    // key trong phần updateDataRealtime
+                    var iframeName =
+                        Object.keys(
+                            subscribers)[0]; // FPT_D (FPT là mã chứng khoán , D là interval - 1 ngày , 1 = 1 phút)
+                    createHubForChart(urlChart3r, dataFeedName, iframeName);
+                });
+            });
+        };
+
+                    //window.addEventListener('DOMContentLoaded', initOnReady, false);
+    </script>
+</head>
+
+<body style="margin: 0px;">
+    <div id="tv_chart_container"></div>
+</body>
+</html>
