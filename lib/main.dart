@@ -6,7 +6,7 @@ import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
 import 'chart_page.dart';
 
-final InAppLocalhostServer localhostServer = InAppLocalhostServer(port: 8080);
+final InAppLocalhostServer localhostServer = InAppLocalhostServer(port: 8888);
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   localhostServer.start();

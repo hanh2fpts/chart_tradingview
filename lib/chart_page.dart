@@ -20,29 +20,34 @@ class _ChartPageState extends State<ChartPage> {
     return Scaffold(
         appBar: AppBar(),
         body: Center(
-          child: InAppWebView(
-            initialUrlRequest: URLRequest(
-                url: Uri.parse("http://localhost:8080/assets/charting_library1/chart_white.html")),
-            androidOnPermissionRequest: (controller, origin, resources) async {
-              return PermissionRequestResponse(
-                  resources: resources, action: PermissionRequestResponseAction.GRANT);
-            },
-            onWebViewCreated: (controller) {
-              //String script = "setEnvironment(\"VNINDEX\", \"VI\");";
-              //controller.evaluateJavascript(source: script);
-            },
-            onLoadStart: (controller, url) {
-              print('loadStart $url');
-            },
-            onLoadStop: (controller, url) {
-              String script = "setEnvironment(\"VNINDEX\", \"VI\");";
-              controller.evaluateJavascript(source: script);
-              //_controller = controller;
-              print('loadStop $url');
-            },
-            onConsoleMessage: (controller, message) {
-              print('logWeb ${message.message}');
-            },
+          child: SizedBox(
+            height: 350,
+            width: MediaQuery.of(context).size.width,
+            child: InAppWebView(
+              initialUrlRequest: URLRequest(
+                url: Uri.parse("http://localhost:8888/assets/charting_library/mobile_black.html"),
+              ),
+              androidOnPermissionRequest: (controller, origin, resources) async {
+                return PermissionRequestResponse(
+                    resources: resources, action: PermissionRequestResponseAction.GRANT);
+              },
+              onWebViewCreated: (controller) {
+                //String script = "setEnvironment(\"VNINDEX\", \"VI\");";
+                //controller.evaluateJavascript(source: script);
+              },
+              onLoadStart: (controller, url) {
+                print('loadStart $url');
+              },
+              onLoadStop: (controller, url) {
+                String script = "setEnvironment(\"VNINDEX\", \"VI\");";
+                controller.evaluateJavascript(source: script);
+                //_controller = controller;
+                print('loadStop $url');
+              },
+              onConsoleMessage: (controller, message) {
+                print('logWeb ${message.message}');
+              },
+            ),
           ),
         ));
   }
